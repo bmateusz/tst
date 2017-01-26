@@ -12,10 +12,10 @@ static int run_tc_or_not(int argc, char *argv[], char *name) {\
   int i, ret = 0;\
   if (argc == 1) return 1;\
   for (i = 1; i < argc; ++i) {\
-    if (strcmp(argv[i], "-skip") == 0) ret = -1;\
-    if (strstr(name, argv[i]) != (void*)0) return ret + 1;\
+    if (strcmp(argv[i], "-skip") == 0) { ret |= 2; if (i == 1) ret |= 1; }\
+    if (strstr(name, argv[i]) != (void*)0) { if (ret & 2) ret &= 2; else ret |= 1; }\
   }\
-  return ret;\
+  return ret & 1;\
 }\
 int main(int argc, char *argv[]) {\
   int success = 0, failed = 0;\
